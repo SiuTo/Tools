@@ -37,3 +37,11 @@ Modify the variables used for configuration and the related code in `scan.py`:
 URL, SMTP_server, Email_addr, Password
 ```
 
+### rmNoise.m
+
+#### Description
+Remove noise of the image which is from a scanned document.
+
+#### Usage
+rmNoise('inputFile', 'outputFile')
+
