@@ -28,13 +28,13 @@ Check new messages from a website every day and seng a email to yourself if ther
 #### Usage
 Add a line to `/etc/crontab`:
 ```
-55 23   * * *   [USER]  python3 [PATH]/scan.py
+10 0   * * *   [USER]  python3 [PATH]/scan.py
 ```
 Replace [USER] and [PATH] with proper values.
 
 Modify the variables used for configuration and the related code in `scan.py`:
 ```
-URL, SMTP_server, Email_addr, Password
+Page_URL, SMTP_server, Email_addr, Password
 ```
 
 ### rmNoise.m

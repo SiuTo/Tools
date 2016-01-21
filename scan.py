@@ -6,31 +6,31 @@ import datetime
 import smtplib
 from email.mime.text import MIMEText
 
-URL = "http://www.jwc.fudan.edu.cn/9397/list.htm"
+Home = "http://www.jwc.fudan.edu.cn"
+Page_URL = Home+"/9397/list.htm"
 SMTP_server = "mail.fudan.edu.cn"
 Email_addr = "xtliang13@fudan.edu.cn"
-Password = "123456789"
+Password = "*********"
 
-response = urllib.request.urlopen(URL)
+response = urllib.request.urlopen(Page_URL)
 html = response.read().decode()
 
 articles = re.findall("<td align=\"left\"><a href=\'(.*)\' target=\'_blank\' title=\'(.*)\' alt=\'.*\'>.*</a>\s*</td>\s*<td align=\"right\">(\d{4})-(\d{2})-(\d{2})\s*</td>", html)
 
-today = datetime.date.today()
+yesterday = datetime.date.today()-datetime.timedelta(days=1)
 content = ""
 for (url, title, year, month, day) in articles:
-	if datetime.date(int(year), int(month), int(day))==today:
-		content += title+"\t"+home+url+"\n"
+	if datetime.date(int(year), int(month), int(day))==yesterday:
+		content += title+"    "+Home+url+"\n"
 if not content:
 	exit()
-content += today.strftime("%Y-%m-%d")+"\n"
+content = yesterday.isoformat()+"\n\n"+content
 
 msg = MIMEText(content, "plain", "utf-8")
 msg["Subject"] = "New Messages from JWC"
 
-server = smtplib.SMTP()
-server.connect(SMTP_server)
+server = smtplib.SMTP_SSL(SMTP_server)
 server.login(Email_addr, Password)
-server.sendmail(Email_addr, Email_addr, msg.as_string())
+server.send_message(msg, Email_addr, Email_addr)
 server.quit()
 
